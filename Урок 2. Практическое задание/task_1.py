@@ -27,3 +27,41 @@
 Вы вместо трехзначного числа ввели строку (((. Исправьтесь
 Введите операцию (+, -, *, / или 0 для выхода):
 """
+import operator
+
+
+def get_number():
+    num = input('Введите число: ')
+    return int(num)
+
+
+def get_operator():
+    match input('Введите операцию (+, -, *, / или 0 для выхода): '):
+        case '+':
+            return operator.add
+        case '-':
+            return operator.sub
+        case '*':
+            return operator.mul
+        case '/':
+            return operator.truediv
+        case '0':
+            raise StopIteration()
+        case _:
+            raise ValueError('Введен неверный символ.')
+
+
+def main():
+    try:
+        val = get_operator()(get_number(), get_number())
+        print('Ваш результат:', val)
+    except ValueError as e:
+        print(e)
+    except StopIteration:
+        return
+
+    main()
+
+
+if __name__ == '__main__':
+    main()

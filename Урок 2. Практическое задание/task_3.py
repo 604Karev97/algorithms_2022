@@ -17,3 +17,19 @@
 Перевернутое число: 321
 Не забудьте проверить на числе, которое оканчивается на 0.
 """
+
+
+def reverse(arr: list[int]):
+    if arr:
+        return [arr.pop()] + reverse(arr)
+    return []
+
+
+def reverse_int(num: int):
+    r = reverse([int(i) for i in str(num)])
+    return int(''.join(map(str, r)))
+
+
+if __name__ == '__main__':
+    print(reverse_int(123))
+    print(reverse_int(0))
