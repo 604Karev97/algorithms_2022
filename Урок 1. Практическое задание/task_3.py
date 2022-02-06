@@ -16,10 +16,23 @@
 
 Примечание: ПРОШУ ВАС ВНИМАТЕЛЬНО ЧИТАТЬ ЗАДАНИЕ!
 """
+import random
+import time
 from operator import itemgetter
+from typing import Callable
 
 
-def dummy_find(companies: dict[str, float]):
+def profile(f: Callable):
+    def wrapper(*args, **kwargs):
+        t_start = time.time()
+        f(*args, **kwargs)
+        print(f'{f.__name__} отработала за {time.time() - t_start}')
+
+    return wrapper
+
+
+@profile
+def fast_find(companies: dict[str, float]):
     """
     Сложность алгоритма - O(n * log(n))
     """
@@ -27,7 +40,8 @@ def dummy_find(companies: dict[str, float]):
     return dict(sorted_by_income[:3])  # O(1)
 
 
-def fast_find(companies: dict[str, float]):
+@profile
+def dummy_find(companies: dict[str, float]):
     """
     Сложность алгоритма - O(n)
     """
@@ -43,3 +57,14 @@ def fast_find(companies: dict[str, float]):
             the_most_successful.append((comp, income))  # O(1)
 
     return dict(the_most_successful)  # O(1)
+
+
+def generate_companies(n: int) -> dict:
+    return {f'company{i}': round(random.random(), 4) * 1000 for i in range(n)}
+
+
+if __name__ == '__main__':
+    _companies = generate_companies(100000)
+
+    dummy_find(_companies)
+    fast_find(_companies)
