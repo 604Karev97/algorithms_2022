@@ -10,3 +10,17 @@
 Решите через рекурсию. Решение через цикл не принимается.
 Нужно обойтисть без создания массива!
 """
+
+
+def sum_row(n: int):
+    if n > 0:
+        if (n - 1) % 2 == 0:
+            return 1 / 2 ** (n - 1) + sum_row(n - 1)
+        return -1 / 2 ** (n - 1) + sum_row(n - 1)
+    return 0
+
+
+if __name__ == '__main__':
+    assert sum_row(3) == 0.75
+    assert sum_row(2) == 0.5
+    assert sum_row(-1) == 0

@@ -17,3 +17,19 @@
 Введите число: 123
 Количество четных и нечетных цифр в числе равно: (1, 2)
 """
+
+
+def count(num: list[int]):
+    if num:
+        elem, (evens, odds) = num.pop(), count(num)
+        return evens + int(elem % 2 == 0), odds + int(elem % 2 != 0)
+    else:
+        return 0, 0
+
+
+def count_odd_even(num: int):
+    return count(list(map(int, str(num))))
+
+
+if __name__ == '__main__':
+    print(count_odd_even(12345))
