@@ -23,3 +23,46 @@ b) выполните со списком и словарем операции: 
 обязательно реализуйте ф-цию-декоратор и пусть она считает время
 И примените ее к своим функциям!
 """
+import time
+import timeit
+
+n = 100_000
+
+_list = list(range(n))
+_dict = dict(zip(range(n), range(n)))
+
+
+def profile(f):
+    """
+    вот он декоратор, просто не хочу использовать его так как есть модуль timetit
+    """
+    def wrapper(*args):
+        statr = time.time()
+        f(*args)
+        print('Time:', time.time() - statr)
+
+    return wrapper
+
+
+def main():
+    # Создание списка - O(n). Так как добавление в конец - O(1) и так n раз
+    print('Create list', timeit.timeit(f'list(range({n}))', number=100))
+
+    # У словаря по сути тоже самое. То есть посчитать hash это O(1) и так n раз
+    print('Create dict', timeit.timeit(f'dict(zip(range({n}), range({n})))', number=100))
+
+    # Создание словаря дольше так как список - просто последовательность ячеек в памяти и мы добавляем в конец.
+    # Со словарем сложнее. Во-первых, нужно посчитать hash, это всяко дольше чем сместиться на одну ячейку в памяти
+    # во вторых - решение колизий (если они есть конечно)
+
+    print('Delete from list center',
+          timeit.timeit('for i in range(len(_list)): del _list[0]', number=100, globals=globals()))
+    print('Delete from dict center',
+          timeit.timeit('for i in range(len(_dict)): del _dict[i]', number=1000, globals=globals()))
+
+    # Спецом у списка удалял с начала. У словаря быстрее, так как вычисляем hash и сразу удаляем.
+    # У листа же после удаления мы все элементы смещаем
+
+
+if __name__ == '__main__':
+    main()
