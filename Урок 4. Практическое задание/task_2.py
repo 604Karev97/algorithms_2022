@@ -12,13 +12,13 @@
 П.С. задание не такое простое, как кажется
 """
 
-from timeit import timeit
 from random import randint
+from timeit import timeit
 
 
 def recursive_reverse(number):
     if number == 0:
-        return str(number % 10)
+        return ''
     return f'{str(number % 10)}{recursive_reverse(number // 10)}'
 
 
@@ -48,12 +48,12 @@ def memoize(f):
     cache = {}
 
     def decorate(*args):
-
         if args in cache:
             return cache[args]
         else:
             cache[args] = f(*args)
             return cache[args]
+
     return decorate
 
 
@@ -80,3 +80,16 @@ print(
         'recursive_reverse_mem(num_10000)',
         setup='from __main__ import recursive_reverse_mem, num_10000',
         number=10000))
+
+if __name__ == '__main__':
+    # В данном случае функция с мемоизацией будет работать быстрее.
+    # Так как первый вызов мы посчитаем значение для числа, а для все
+    # остальных вызовов будем возвращать уже посчитанное значение.
+    #
+    # Если перед вычислением очередного значения импортировать функцию по новой,
+    # тем самым обновляя состояние декоратора (удаляя cache), то мемоизация будет
+    # бесполезна. Так как каждое новое значение передаваемое функции будет уникальный.
+    #
+    #
+    # Вывод. Тут мемоизация помогает. Так функция импортируется только один раз
+    pass
