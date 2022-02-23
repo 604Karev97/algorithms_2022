@@ -11,7 +11,7 @@
 Подсказка:
 Для решения задачи обязательно примените коллекцию из модуля collections
 Для лучшего освоения материала можете сделать
-несколько варианто решения этого задания,
+несколько вариантов решения этого задания,
 применив несколько коллекций из модуля collections
 
 Пример:
@@ -28,3 +28,39 @@
 Предприятия, с прибылью выше среднего значения: Рога
 Предприятия, с прибылью ниже среднего значения: Копыта
 """
+import operator
+import statistics
+from collections import namedtuple
+
+Org = namedtuple('Org',
+                 ['name', 'income'])
+
+
+def print_analytic(org_list: list[Org]):
+    total_income = sum(map(operator.attrgetter('income'), org_list), tuple())
+    mean = statistics.mean(total_income)
+
+    less = []
+    more = []
+    for org in org_list:
+        if statistics.mean(org.income) > mean:
+            more.append(org.name)
+        else:
+            less.append(org.name)
+
+    print('Предприятия, с прибылью выше среднего значения:', more)
+    print('Предприятия, с прибылью ниже среднего значения:', less)
+
+
+if __name__ == '__main__':
+    num_of_organizations = int(input('Введите количество организаций: '))
+
+    org_incomes = []
+    for i in range(num_of_organizations):
+        org_name = str(input('Введите название предприятия: '))
+        income = str(input('Введите доход за 4 квартала через пробел: '))
+        income = map(int, income.split(' '))
+
+        org_incomes.append(Org(name=org_name, income=tuple(income)))
+
+    print_analytic(org_incomes)
